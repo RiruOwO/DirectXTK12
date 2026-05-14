@@ -1,4 +1,4 @@
-//
+﻿//
 // MainScene.cpp
 //
 
@@ -80,7 +80,8 @@ void MainScene::CreateResources()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
-
+	player_x_ = (DXTK->SwapChain.Width - ema_sprite_.size.x) / 1.0f;
+	player_y_ = (DXTK->SwapChain.Height - ema_sprite_.size.y) / 1.0f;
 }
 
 // Releasing resources required for termination.
@@ -119,8 +120,7 @@ NextScene MainScene::Update(const float deltaTime)
 	UNREFERENCED_PARAMETER(deltaTime);
 
 	// TODO: Add your game logic here.
-
-
+	player_x_ += 2.0f;
 
 	return NextScene::Continue;
 }
@@ -138,15 +138,16 @@ void MainScene::Render()
 	commandList->SetDescriptorHeaps(std::size(heaps), heaps);
 
 	sprite_batch_->Begin(commandList);
+
 	sprite_batch_->Draw(
-		bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f)
-	);
+		bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f));
+
 	sprite_batch_->Draw(
-		ema_sprite_.handle, ema_sprite_.size, Vector2(690.0f, 100.0f)
-	);
+		ema_sprite_.handle, ema_sprite_.size, Vector2(player_x_, 100.0));
+
 	sprite_batch_->Draw(
-		mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f)
-	);
+		mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f));
+
 	sprite_batch_->End();
 
 
