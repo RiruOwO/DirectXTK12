@@ -9,8 +9,8 @@ pathを読み込む<br>
 
 DescripterHeapやspriteを書く<br>
 
-画像分 ```descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);``` を変える 
+画像分 ```descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);``` を変える <br>
 
-5/14
-エマちゃんを右に移動させた
-player_x_をfloat型で宣言
+## 5/14<br>
+エマちゃんを右に移動させた<br>
+player_x_をfloat型で宣言<br>
