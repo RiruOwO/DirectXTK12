@@ -48,12 +48,12 @@ void MainScene::CreateDeviceDependentResources()
 		device, L"eatspease.png", resourceUpload,
 		descriptor_heap_, 0
 	);
-	//エマちゃん
+	//エマ
 	ema_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"sakurabaEma.png", resourceUpload,
 		descriptor_heap_, 1
 	);
-	//メルルちゃん
+	//メルル
 	mrr_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"hikamimrr.png", resourceUpload,
 		descriptor_heap_, 2
