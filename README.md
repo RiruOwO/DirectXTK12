@@ -9,6 +9,8 @@
 >  DescripterHeapやspriteを書く<br>
 >  画像分 ```descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);``` を変える <br>
 
-## 5/14<br>
-エマちゃんを右に移動させた<br>
-player_x_をfloat型で宣言<br>
+# 5/14<br>
+
+## エマちゃんを移動させた<br>
+>  [!TIP]
+>  player_x_をfloat型で宣言<br>
