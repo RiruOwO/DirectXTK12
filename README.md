@@ -3,7 +3,7 @@
 ## Preview
 !["img"](https://github.com/RiruOwO/DirectXTK12/blob/master/HuGame%20(DX12_sRGB).png)
 
-assetsに画像を置く
-pathを読み込む
-DescripterHeapやspriteを書く
-
+assetsに画像を置く<br>
+pathを読み込む<br>
+DescripterHeapやspriteを書くbr>
+画像分 ```descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);``` を変える 
