@@ -16,9 +16,9 @@
 ## エマちゃんを移動させた<br>
 >  [!NOTE]
 >  座標用の変数を宣言する  `float player_x_, player_y_;`<br>
->  Initialize関数に初期値を設定する
->  Update関数に移動させるのを書く
->  Render関数に変数を用いる
+>  Initialize関数に初期値を設定する <br>
+>  Update関数に移動させるのを書く  <br>
+>  Render関数に変数を用いる  <br>
 
 >  [!TIP]
 >  player_postion_x_と長いのが嫌な時は宣言時にplayer_x_など短くすることができる
