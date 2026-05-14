@@ -16,3 +16,6 @@
 ## エマちゃんを移動させた<br>
 >  [!NOTE]
 >  player_x_をfloat型で宣言<br>
+
+>  [!TIP]
+>  player_postion_x_と長いのが嫌な時は宣言時にplayer_x_など短くすることができる
