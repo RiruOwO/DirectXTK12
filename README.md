@@ -1,3 +1,3 @@
 # DirectXの授業
 
-!["Preview"]("コピーしたパスを貼り付ける")
+!["Preview"]("HuGame (DX12_sRGB).png")
