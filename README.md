@@ -7,10 +7,12 @@
 >  assetsに画像を置く<br>
 > pathを読み込む<br>
 >  DescripterHeapやspriteを書く<br>
+
+>  [!TIP]  
 >  画像分 ```descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);``` を変える <br>
 
 # 5/14<br>
 
 ## エマちゃんを移動させた<br>
->  [!TIP]
+>  [!NOTE]
 >  player_x_をfloat型で宣言<br>
