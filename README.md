@@ -5,5 +5,5 @@
 
 assetsに画像を置く<br>
 pathを読み込む<br>
-DescripterHeapやspriteを書くbr>
+DescripterHeapやspriteを書<br>
 画像分 ```descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);``` を変える 
