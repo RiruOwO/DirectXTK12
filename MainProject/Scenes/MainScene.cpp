@@ -125,9 +125,18 @@ NextScene MainScene::Update(const float deltaTime)
 	UNREFERENCED_PARAMETER(deltaTime);
 
 	// TODO: Add your game logic here.
-	player_x_ += 2.0f;
+	//player_x_ += 2.0f;
+
+
+	if (InputSystem.Keyboard.isPressed.A)
+		player_pos_.x -= 10.0f;
+
+	if (InputSystem.Keyboard.isPressed.D)
+		player_pos_.x += 10.0f;
 
 	return NextScene::Continue;
+
+
 }
 
 // Draws the scene.
@@ -154,7 +163,7 @@ void MainScene::Render()
 		//mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f));
 
 	sprite_batch_->Draw(
-		shion_sprite_.handle, shion_sprite_.size, Vector2(600.0f, 200.0f));
+		shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
 
 	sprite_batch_->End();
 
