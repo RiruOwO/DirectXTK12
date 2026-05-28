@@ -47,6 +47,7 @@ private:
 	DirectXTK::Sprite shion_sprite_;
 	DirectXTK::SpriteBatch sprite_batch_;
 
+	DirectX::SimpleMath::Vector2 player_pos_;
 	float player_x_, player_y_;
 
 };

@@ -154,7 +154,7 @@ void MainScene::Render()
 		//mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f));
 
 	sprite_batch_->Draw(
-		shion_sprite_.handle, shion_sprite_.size, Vector2(0.0f, 200.0f));
+		shion_sprite_.handle, shion_sprite_.size, Vector2(600.0f, 200.0f));
 
 	sprite_batch_->End();
 
