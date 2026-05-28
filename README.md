@@ -26,7 +26,7 @@
 # 5/28 | シオンちゃんをキーボード入力で左右移動させた <br>
 
 #### こんにちワッフル...
-!["img"](https://github.com/RiruOwO/DirectXTK12/blob/master/2026_05_28.png)
+!["img"](https://github.com/RiruOwO/DirectXTK12/blob/master/2026_05_28_1.png)
 
 >  [!NOTE]
 > ### 移動処理
