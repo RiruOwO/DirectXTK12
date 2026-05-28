@@ -181,7 +181,6 @@ void MainScene::Render()
 	sprite_batch_->Draw(
 		rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 150.0f));
 
-
 	sprite_batch_->End();
 
 	DXTK->EndScene();
