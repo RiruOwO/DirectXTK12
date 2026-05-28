@@ -133,10 +133,8 @@ NextScene MainScene::Update(const float deltaTime)
 	}
 
 	void boarder(); {
-		if (player_pos_.x < 0.0f)
-			player_pos_.x = 0.0f;
-		if (player_pos_.x > DXTK->SwapChain.Width - shion_sprite_.size.x)
-			player_pos_.x = DXTK->SwapChain.Width - shion_sprite_.size.x;
+		player_pos_.x = std::max(player_pos_.x, 0.0f); 
+		player_pos_.x = std::min(player_pos_.x, 1280.0f - shion_sprite_.size.x);
 	}
 
 	return NextScene::Continue;

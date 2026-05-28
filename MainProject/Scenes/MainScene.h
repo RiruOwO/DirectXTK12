@@ -46,6 +46,7 @@ private:
 	DirectXTK::Sprite ema_sprite_;
 	DirectXTK::Sprite mrr_sprite_;
 	DirectXTK::Sprite shion_sprite_;
+	DirectXTK::Sprite rim_sprite_;
 	DirectXTK::SpriteBatch sprite_batch_;
 
 	DirectX::SimpleMath::Vector2 player_pos_;
