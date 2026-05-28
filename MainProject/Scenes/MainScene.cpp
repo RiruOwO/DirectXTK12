@@ -179,7 +179,7 @@ void MainScene::Render()
 		shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
 
 	sprite_batch_->Draw(
-		rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 150.0f));
+		rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 130.0f));
 
 	sprite_batch_->End();
 
