@@ -28,4 +28,11 @@
 ## シオンちゃんをキーボード入力で移動させた <br>
 
 ## preview
+!["img"](https://github.com/RiruOwO/DirectXTK12/blob/master/2026_05_28.png)
 
+>  [!NOTE]
+> DXTKはキーボードの状態が毎フレームUpdate関数で取得され、その状態を参照して移動処理を行っている <br>
+> ### 押されている <br>
+> ### 押された瞬間 <br>
+> ### 離された瞬間 <br>
+> 上記3つがDXTKにはある
