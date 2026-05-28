@@ -5,11 +5,11 @@
 
 >  [!NOTE]
 >  assetsに画像を置く<br>
-> pathを読み込む<br>
 >  DescripterHeapやspriteを書く<br>
 
 >  [!TIP]  
 >  画像分 ```descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);``` を変える <br>
+>  画像分 private関数に定義する<br>
 
 # 5/14<br>
 
