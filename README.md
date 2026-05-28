@@ -23,9 +23,9 @@
 >  [!TIP]
 >  player_postion_x_と長いのが嫌な時は宣言時にplayer_x_など短くすることができる <br>
 
-# 5/28 | シオンちゃんをキーボード入力で移動させた<br>
+# 5/28 | シオンちゃんをキーボード入力で左右移動させた <br>
 
-## preview
+#### こんにちワッフル...
 !["img"](https://github.com/RiruOwO/DirectXTK12/blob/master/2026_05_28.png)
 
 >  [!NOTE]
