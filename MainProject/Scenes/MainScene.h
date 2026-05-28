@@ -44,6 +44,7 @@ private:
 	DirectXTK::Sprite bg_sprite_;
 	DirectXTK::Sprite ema_sprite_;
 	DirectXTK::Sprite mrr_sprite_;
+	DirectXTK::Sprite shion_sprite_;
 	DirectXTK::SpriteBatch sprite_batch_;
 
 	float player_x_, player_y_;
