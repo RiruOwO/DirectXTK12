@@ -124,15 +124,20 @@ NextScene MainScene::Update(const float deltaTime)
 	// If you use 'deltaTime', remove it.
 	UNREFERENCED_PARAMETER(deltaTime);
 
-	// TODO: Add your game logic here.
-	//player_x_ += 2.0f;
+	void momvent(); {
+		if (InputSystem.Keyboard.isPressed.A)
+			player_pos_.x -= 10.0f;
 
+		if (InputSystem.Keyboard.isPressed.D)
+			player_pos_.x += 10.0f;
+	}
 
-	if (InputSystem.Keyboard.isPressed.A)
-		player_pos_.x -= 10.0f;
-
-	if (InputSystem.Keyboard.isPressed.D)
-		player_pos_.x += 10.0f;
+	void boarder(); {
+		if (player_pos_.x < 0.0f)
+			player_pos_.x = 0.0f;
+		if (player_pos_.x > DXTK->SwapChain.Width - shion_sprite_.size.x)
+			player_pos_.x = DXTK->SwapChain.Width - shion_sprite_.size.x;
+	}
 
 	return NextScene::Continue;
 
@@ -166,8 +171,6 @@ void MainScene::Render()
 		shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
 
 	sprite_batch_->End();
-
-
 
 	DXTK->EndScene();
 }
