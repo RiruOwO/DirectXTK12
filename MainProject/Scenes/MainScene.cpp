@@ -45,7 +45,7 @@ void MainScene::CreateDeviceDependentResources()
 	resourceUpload.Begin();
 
 	bg_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"eatspease.png", resourceUpload,
+		device, L"so.png", resourceUpload,
 		descriptor_heap_, 0
 	);
 
