@@ -42,6 +42,7 @@ private:
 
 	DirectXTK::DescriptorHeap descriptor_heap_;
 	DirectXTK::Sprite bg_sprite_;
+	DirectXTK::Sprite bg2_sprite_;
 	DirectXTK::Sprite ema_sprite_;
 	DirectXTK::Sprite mrr_sprite_;
 	DirectXTK::Sprite shion_sprite_;
