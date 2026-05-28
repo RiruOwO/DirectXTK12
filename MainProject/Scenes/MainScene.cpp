@@ -39,7 +39,7 @@ void MainScene::CreateDeviceDependentResources()
 	auto&& device       = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
-	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 4);
+	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 5);
 
 	ResourceUploadBatch resourceUpload(device);
 	resourceUpload.Begin();
@@ -48,21 +48,31 @@ void MainScene::CreateDeviceDependentResources()
 		device, L"eatspease.png", resourceUpload,
 		descriptor_heap_, 0
 	);
+
 	//エマ
 	ema_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"sakurabaEma.png", resourceUpload,
 		descriptor_heap_, 1
 	);
+
 	//メルル
 	mrr_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"hikamimrr.png", resourceUpload,
 		descriptor_heap_, 2
 	);
+
 	//シオン ザ DB
 	shion_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"ShionTheDB.png", resourceUpload,
 		descriptor_heap_, 3
 	);
+
+	//リム
+	rim_sprite_ = DirectXTK::CreateSpriteSRV(
+		device, L"rim.png", resourceUpload,
+		descriptor_heap_, 4
+	);
+
 
 	auto&& swapChain = DXTK->SwapChain;
 	RenderTargetState rts(swapChain.Format, swapChain.DepthFormat);
@@ -167,6 +177,10 @@ void MainScene::Render()
 
 	sprite_batch_->Draw(
 		shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
+
+	sprite_batch_->Draw(
+		rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 150.0f));
+
 
 	sprite_batch_->End();
 
