@@ -51,6 +51,9 @@
 >   -10 と 0 を比べたら 0 の方が大きいので 0 が返される <br>
 >   結果 player_pos_.x に 0.0f が強制上書きされる <br>
 
-# 6/4 | Null
+# 6/4 | いろいろ <br>
+
+#### 学校指定のpngがあることに今気づいて滅
+!["img"](https://github.com/RiruOwO/DirectXTK12/blob/master/2026_06_04.png)
 
 
