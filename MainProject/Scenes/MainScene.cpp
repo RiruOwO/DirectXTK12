@@ -1,4 +1,4 @@
-//
+﻿//
 // MainScene.cpp
 //
 
@@ -46,7 +46,7 @@ void MainScene::CreateDeviceDependentResources()
 	resourceUpload.Begin();
 
 	bg_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"Scroll\\TestBG.png", resourceUpload,
+		device, L"TestBG.png", resourceUpload,
 		descriptor_heap_, 0
 	);
 	player_sprite_ = DirectXTK::CreateSpriteSRV(
@@ -133,7 +133,7 @@ NextScene MainScene::Update(const float deltaTime)
 	player_position_.y = std::clamp(player_position_.y, 0.0f, 720.0f - 128.0f);
 
 	// 背景スクロール
-	bg_position_.x -= 1.0f;
+	bg_position_.x -= 4.0f;
 
 	return NextScene::Continue;
 }
