@@ -169,17 +169,17 @@ void MainScene::Render()
 	sprite_batch_->Draw(
 		bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f));
 
-	//sprite_batch_->Draw(
+	// sprite_batch_->Draw(
 		//ema_sprite_.handle, ema_sprite_.size, Vector2(player_x_, 100.0));
 
-	//sprite_batch_->Draw(
+	// sprite_batch_->Draw(
 		//mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f));
 
 	sprite_batch_->Draw(
 		shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
 
-	sprite_batch_->Draw(
-		rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 130.0f));
+	// sprite_batch_->Draw(
+	//	rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 130.0f));
 
 	sprite_batch_->End();
 
