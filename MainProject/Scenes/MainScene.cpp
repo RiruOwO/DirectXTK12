@@ -162,17 +162,33 @@ NextScene MainScene::Update(const float deltaTime)
 	{
 		player_pos_.y -= speed * deltaTime;
 	}
+
 	if (InputSystem.Keyboard.isPressed.S)
 	{
-		player_pos_.y += speed * deltaTime; 
+		player_pos_.y += speed * deltaTime;
 	}
 
-	player_pos_.x = std::max(player_pos_.x, 0.0f);
-	player_pos_.x = std::min(player_pos_.x, 1280.0f - SCplayer_sprite_.size.x);
+	if (player_pos_.x < 0.0f)
+	{
+		player_pos_.x = 0.0f;
+	}
 
-	player_pos_.y = std::max(player_pos_.y, 0.0f); 
-	player_pos_.y = std::min(player_pos_.y, 720.0f - SCplayer_sprite_.size.y);
+	float max_x = 1280.0f - SCplayer_sprite_.size.x;
+	if (player_pos_.x > max_x)
+	{
+		player_pos_.x = max_x;
+	}
 
+	if (player_pos_.y < 0.0f)
+	{
+		player_pos_.y = 0.0f;
+	}
+
+	float max_y = 720.0f - SCplayer_sprite_.size.y;
+	if (player_pos_.y > max_y)
+	{
+		player_pos_.y = max_y;
+	}
 
 	return NextScene::Continue;
 }
