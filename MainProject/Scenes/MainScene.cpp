@@ -36,7 +36,7 @@ void MainScene::Start()
 // These are the resources that depend on the device.
 void MainScene::CreateDeviceDependentResources()
 {
-	auto&& device       = DXTK->Device;
+	auto&& device = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
 	// TODO: Add your device-dependent creation code here.
@@ -46,7 +46,7 @@ void MainScene::CreateDeviceDependentResources()
 	resourceUpload.Begin();
 
 	bg_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"bg.png", resourceUpload,
+		device, L"Scroll\\TestBG.png", resourceUpload,
 		descriptor_heap_, 0
 	);
 	player_sprite_ = DirectXTK::CreateSpriteSRV(
@@ -78,6 +78,7 @@ void MainScene::CreateResources()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
+	bg_position_ = Vector2(0.0f, 0.0f);
 	player_position_ = Vector2(0.0f, 0.0f);
 	enemy_position_ = Vector2(1280.0f - 128.0f, 720.0f - 128.0f);
 }
@@ -116,31 +117,23 @@ NextScene MainScene::Update(const float deltaTime)
 	// If you use 'deltaTime', remove it.
 	UNREFERENCED_PARAMETER(deltaTime);
 
-	// TODO: Add your game logic here.
 	Vector2 direction(0.0f, 0.0f);
-	if (InputSystem.Keyboard.isPressed.D) {
+	if (InputSystem.Keyboard.isPressed.Right)
 		direction.x += 1.0f;
-	}
-	if (InputSystem.Keyboard.isPressed.A) {
+	if (InputSystem.Keyboard.isPressed.Left)
 		direction.x -= 1.0f;
-	}
-	if (InputSystem.Keyboard.isPressed.S) {
+	if (InputSystem.Keyboard.isPressed.Down)
 		direction.y += 1.0f;
-	}
-	if (InputSystem.Keyboard.isPressed.W) {
+	if (InputSystem.Keyboard.isPressed.Up)
 		direction.y -= 1.0f;
-	}
 
 	direction.Normalize();
 	player_position_ += direction * 5.0f;
-
 	player_position_.x = std::clamp(player_position_.x, 0.0f, 1280.0f - 128.0f);
-
 	player_position_.y = std::clamp(player_position_.y, 0.0f, 720.0f - 128.0f);
 
-	Vector2 enemy_direction = player_position_ - enemy_position_;
-	enemy_direction.Normalize();
-	enemy_position_ += enemy_direction * 3.0f;
+	// 背景スクロール
+	bg_position_.x -= 1.0f;
 
 	return NextScene::Continue;
 }
@@ -149,9 +142,9 @@ NextScene MainScene::Update(const float deltaTime)
 void MainScene::Render()
 {
 	DXTK->BeginScene();
-	DXTK->ClearRenderTarget(Colors::CornflowerBlue);
+	DXTK->ClearRenderTarget(Colors::Black);
 
-	auto&& device      = DXTK->Device;
+	auto&& device = DXTK->Device;
 	auto&& commandList = DXTK->Command.List;
 
 	// TODO: Add your rendering code here.
@@ -161,7 +154,7 @@ void MainScene::Render()
 	sprite_batch_->Begin(commandList);
 
 	sprite_batch_->Draw(
-		bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f)
+		bg_sprite_.handle, bg_sprite_.size, bg_position_
 	);
 	sprite_batch_->Draw(
 		player_sprite_.handle, player_sprite_.size,

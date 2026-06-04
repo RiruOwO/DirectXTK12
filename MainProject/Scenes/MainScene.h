@@ -43,6 +43,7 @@ private:
 	DirectXTK::SpriteBatch sprite_batch_;
 
 	DirectXTK::Sprite bg_sprite_;
+	SimpleMath::Vector2 bg_position_;
 
 	DirectXTK::Sprite player_sprite_;
 	SimpleMath::Vector2 player_position_;
