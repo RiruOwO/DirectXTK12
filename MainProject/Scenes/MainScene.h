@@ -39,24 +39,14 @@ public:
 	void Render() override;
 
 private:
-
 	DirectXTK::DescriptorHeap descriptor_heap_;
-	DirectXTK::Sprite bg_sprite_;
-	DirectXTK::Sprite bg2_sprite_;
-	DirectXTK::Sprite ema_sprite_;
-	DirectXTK::Sprite mrr_sprite_;
-	DirectXTK::Sprite shion_sprite_;
-	DirectXTK::Sprite rim_sprite_;
-
-	DirectXTK::Sprite SCplayer_sprite_;
-	DirectXTK::Sprite SCbg_sprite_;
-	DirectXTK::Sprite SCenmy_sprite_;
-
 	DirectXTK::SpriteBatch sprite_batch_;
 
-	SimpleMath::Vector2 player_pos_;
-	SimpleMath::Vector2 enemy_pos_;
+	DirectXTK::Sprite bg_sprite_;
 
-	float player_x_, player_y_;
+	DirectXTK::Sprite player_sprite_;
+	SimpleMath::Vector2 player_position_;
 
+	DirectXTK::Sprite enemy_sprite_;
+	SimpleMath::Vector2 enemy_position_;
 };

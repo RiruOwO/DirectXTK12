@@ -1,4 +1,4 @@
-﻿//
+//
 // MainScene.cpp
 //
 
@@ -39,66 +39,34 @@ void MainScene::CreateDeviceDependentResources()
 	auto&& device       = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
-	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 8);
+	// TODO: Add your device-dependent creation code here.
+	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);
 
 	ResourceUploadBatch resourceUpload(device);
 	resourceUpload.Begin();
 
 	bg_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"so.png", resourceUpload,
+		device, L"bg.png", resourceUpload,
 		descriptor_heap_, 0
 	);
-
-	// エマ
-	ema_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"sakurabaEma.png", resourceUpload,
+	player_sprite_ = DirectXTK::CreateSpriteSRV(
+		device, L"player.png", resourceUpload,
 		descriptor_heap_, 1
 	);
-
-	// メルル
-	mrr_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"hikamimrr.png", resourceUpload,
+	enemy_sprite_ = DirectXTK::CreateSpriteSRV(
+		device, L"enemy.png", resourceUpload,
 		descriptor_heap_, 2
-	);
-
-	// シオン ザ DB
-	shion_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"ShionTheDB.png", resourceUpload,
-		descriptor_heap_, 3
-	);
-
-	// リム
-	rim_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"rim.png", resourceUpload,
-		descriptor_heap_, 4
-	);
-	
-	// 学校指定の画像s
-	SCplayer_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"Player.png", resourceUpload,
-		descriptor_heap_, 5
-	);
-
-	SCenmy_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"Enemy.png", resourceUpload,
-		descriptor_heap_, 6
-	);
-
-	SCbg_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"BG.png", resourceUpload,
-		descriptor_heap_, 7
 	);
 
 	auto&& swapChain = DXTK->SwapChain;
 	RenderTargetState rts(swapChain.Format, swapChain.DepthFormat);
-	SpriteBatchPipelineStateDescription pd(rts);
+	SpriteBatchPipelineStateDescription pd(rts, &CommonStates::NonPremultiplied);
 	sprite_batch_ = DirectXTK::CreateSpriteBatch(
 		device, resourceUpload, pd, &swapChain.Viewport
 	);
 
 	auto&& uploadFinished = resourceUpload.End(commandQueue);
 	uploadFinished.wait();
-
 }
 
 // Create independent resources.
@@ -110,8 +78,8 @@ void MainScene::CreateResources()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
-	// player_x_ = (DXTK->SwapChain.Width - ema_sprite_.size.x) / 1.0f;
-	// player_y_ = (DXTK->SwapChain.Height - ema_sprite_.size.y) / 1.0f;
+	player_position_ = Vector2(0.0f, 0.0f);
+	enemy_position_ = Vector2(1280.0f - 128.0f, 720.0f - 128.0f);
 }
 
 // Releasing resources required for termination.
@@ -127,7 +95,6 @@ void MainScene::Terminate()
 
 	// TODO: Add your Termination logic here.
 	DXTK->DescriptorHeaps[0].reset();
-
 
 }
 
@@ -146,37 +113,44 @@ void MainScene::OnRestartSound()
 // Updates the scene.
 NextScene MainScene::Update(const float deltaTime)
 {
-	const float speed = 600.0f;
+	// If you use 'deltaTime', remove it.
+	UNREFERENCED_PARAMETER(deltaTime);
 
-	if (InputSystem.Keyboard.isPressed.A)
-	{
-		player_pos_.x -= speed * deltaTime;
+	// TODO: Add your game logic here.
+	Vector2 direction(0.0f, 0.0f);
+	if (InputSystem.Keyboard.isPressed.Right) {
+		direction.x += 1.0f;
+	}
+	if (InputSystem.Keyboard.isPressed.Left) {
+		direction.x -= 1.0f;
+	}
+	if (InputSystem.Keyboard.isPressed.Down) {
+		direction.y += 1.0f;
+	}
+	if (InputSystem.Keyboard.isPressed.Up) {
+		direction.y -= 1.0f;
 	}
 
-	if (InputSystem.Keyboard.isPressed.D)
-	{
-		player_pos_.x += speed * deltaTime;
-	}
+	// ベクトルの正規化(長さを1にする)
+	direction.Normalize();
+	player_position_ += direction * 5.0f;
 
-	if (InputSystem.Keyboard.isPressed.W)
-	{
-		player_pos_.y -= speed * deltaTime;
-	}
+	// 左右の外に出られない
+	player_position_.x = std::clamp(player_position_.x, 0.0f, 1280.0f - 128.0f);
 
-	if (InputSystem.Keyboard.isPressed.S)
-	{
-		player_pos_.y += speed * deltaTime;
-	}
+	// 上下の外に出られない
+	player_position_.y = std::clamp(player_position_.y, 0.0f, 720.0f - 128.0f);
 
-	player_pos_.x = std::clamp(player_pos_.x, 0.0f, 1280.0f - 128.0f);
-
-	player_pos_.y = std::clamp(player_pos_.y, 0.0f, 720.0f - 128.0f);
-
-
-	Vector2 enemy_direction = player_pos_ - enemy_pos_;
-	enemy_pos_ += enemy_direction;
-
-
+	// 敵キャラクターの移動
+	Vector2 enemy_direction = player_position_ - enemy_position_;
+	enemy_position_ += enemy_direction;
+	// 変位ベクトル
+	// 正規化, 単位ベクトル
+	// ベクトルの定数倍
+	// 
+	// 敵から見ると、
+	// ゴール座標:プレイヤーの座標
+	// スタート:敵の座標(現在の座標)
 
 	return NextScene::Continue;
 }
@@ -190,40 +164,23 @@ void MainScene::Render()
 	auto&& device      = DXTK->Device;
 	auto&& commandList = DXTK->Command.List;
 
+	// TODO: Add your rendering code here.
 	ID3D12DescriptorHeap* heaps[] = { descriptor_heap_->Heap() };
 	commandList->SetDescriptorHeaps(std::size(heaps), heaps);
 
 	sprite_batch_->Begin(commandList);
 
-	//  sprite_batch_->Draw(
-	//	bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f));
-
-	//  sprite_batch_->Draw(
-	//  ema_sprite_.handle, ema_sprite_.size, Vector2(player_x_, 100.0));
-
-	//  sprite_batch_->Draw(
-	//	mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f));
-
-	//  sprite_batch_->Draw(
-	//	shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
-
-	//  sprite_batch_->Draw(
-	//	rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 130.0f));
-
-		sprite_batch_->Draw(
-		SCbg_sprite_.handle, SCbg_sprite_.size, Vector2(0.0f, 0.0f));
-
-		sprite_batch_->Draw(
-			SCplayer_sprite_.handle, SCplayer_sprite_.size, Vector2(player_pos_.x, player_pos_.y));
-
-		sprite_batch_->Draw(
-			SCenmy_sprite_.handle, SCenmy_sprite_.size, Vector2(800.0f, 130.0f));
-
-
-
-
-
-
+	sprite_batch_->Draw(
+		bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f)
+	);
+	sprite_batch_->Draw(
+		player_sprite_.handle, player_sprite_.size,
+		player_position_
+	);
+	sprite_batch_->Draw(
+		enemy_sprite_.handle, enemy_sprite_.size,
+		enemy_position_
+	);
 
 	sprite_batch_->End();
 
