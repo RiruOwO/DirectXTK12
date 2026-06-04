@@ -55,6 +55,8 @@ private:
 	DirectXTK::SpriteBatch sprite_batch_;
 
 	DirectX::SimpleMath::Vector2 player_pos_;
+	DirectX::SimpleMath::Vector2 enemy_pos_;
+
 	float player_x_, player_y_;
 
 };

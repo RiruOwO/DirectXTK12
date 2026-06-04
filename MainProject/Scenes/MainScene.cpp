@@ -174,6 +174,11 @@ NextScene MainScene::Update(const float deltaTime)
 	player_pos_.y = std::max(player_pos_.y, 0.0f);
 	player_pos_.y = std::min(player_pos_.y, 720.0f - SCplayer_sprite_.size.y);
 
+	player_pos_;
+	enemy_pos_;
+
+
+
 	return NextScene::Continue;
 }
 
