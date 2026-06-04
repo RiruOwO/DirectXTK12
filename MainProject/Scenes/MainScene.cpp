@@ -74,7 +74,20 @@ void MainScene::CreateDeviceDependentResources()
 	);
 
 	// 学校指定の画像
+	SCplayer_sprite_ = DirectXTK::CreateSpriteSRV(
+		device, L"Player.png", resourceUpload,
+		descriptor_heap_, 5
+	);
 
+	SCenmy_sprite_ = DirectXTK::CreateSpriteSRV(
+		device, L"Enemy.png", resourceUpload,
+		descriptor_heap_, 6
+	);
+
+	SCbg_sprite_ = DirectXTK::CreateSpriteSRV(
+		device, L"BG.png", resourceUpload,
+		descriptor_heap_, 7
+	);
 
 	auto&& swapChain = DXTK->SwapChain;
 	RenderTargetState rts(swapChain.Format, swapChain.DepthFormat);
@@ -97,8 +110,8 @@ void MainScene::CreateResources()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
-	player_x_ = (DXTK->SwapChain.Width - ema_sprite_.size.x) / 1.0f;
-	player_y_ = (DXTK->SwapChain.Height - ema_sprite_.size.y) / 1.0f;
+	// player_x_ = (DXTK->SwapChain.Width - ema_sprite_.size.x) / 1.0f;
+	// player_y_ = (DXTK->SwapChain.Height - ema_sprite_.size.y) / 1.0f;
 }
 
 // Releasing resources required for termination.
@@ -146,7 +159,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	void boarder(); {
 		player_pos_.x = std::max(player_pos_.x, 0.0f); 
-		player_pos_.x = std::min(player_pos_.x, 1280.0f - shion_sprite_.size.x);
+		player_pos_.x = std::min(player_pos_.x, 1280.0f - SCplayer_sprite_.size.x);
 	}
 
 	return NextScene::Continue;
@@ -168,20 +181,35 @@ void MainScene::Render()
 
 	sprite_batch_->Begin(commandList);
 
-	// sprite_batch_->Draw(
+	//  sprite_batch_->Draw(
 	//	bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f));
 
-	// sprite_batch_->Draw(
+	//  sprite_batch_->Draw(
 	//  ema_sprite_.handle, ema_sprite_.size, Vector2(player_x_, 100.0));
 
-	// sprite_batch_->Draw(
+	//  sprite_batch_->Draw(
 	//	mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f));
 
-	// sprite_batch_->Draw(
+	//  sprite_batch_->Draw(
 	//	shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
 
-	// sprite_batch_->Draw(
+	//  sprite_batch_->Draw(
 	//	rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 130.0f));
+
+		sprite_batch_->Draw(
+		SCbg_sprite_.handle, SCbg_sprite_.size, Vector2(0.0f, 0.0f));
+
+		sprite_batch_->Draw(
+			SCplayer_sprite_.handle, SCplayer_sprite_.size, Vector2(player_pos_.x, 200.0f));
+
+		sprite_batch_->Draw(
+			SCenmy_sprite_.handle, SCenmy_sprite_.size, Vector2(800.0f, 130.0f));
+
+
+
+
+
+
 
 	sprite_batch_->End();
 
