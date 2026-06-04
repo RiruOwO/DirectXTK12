@@ -56,4 +56,7 @@
 #### 学校指定のpngがあることに今気づいて滅
 !["img"](https://github.com/RiruOwO/DirectXTK12/blob/master/2026_06_04.png)
 
+### maxとminを使って画面外に行かないようにした <br>
+> 43行の部分で既にやってるけど一回別のに変えられたから二度手間なの何 <br>
+
 
