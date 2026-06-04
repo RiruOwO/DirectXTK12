@@ -47,6 +47,11 @@ private:
 	DirectXTK::Sprite mrr_sprite_;
 	DirectXTK::Sprite shion_sprite_;
 	DirectXTK::Sprite rim_sprite_;
+
+	DirectXTK::Sprite SCplayer_sprite_;
+	DirectXTK::Sprite SCbg_sprite_;
+	DirectXTK::Sprite SCenmy_sprite_;
+
 	DirectXTK::SpriteBatch sprite_batch_;
 
 	DirectX::SimpleMath::Vector2 player_pos_;

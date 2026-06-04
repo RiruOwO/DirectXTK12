@@ -39,7 +39,7 @@ void MainScene::CreateDeviceDependentResources()
 	auto&& device       = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
-	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 5);
+	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 8);
 
 	ResourceUploadBatch resourceUpload(device);
 	resourceUpload.Begin();
@@ -49,29 +49,31 @@ void MainScene::CreateDeviceDependentResources()
 		descriptor_heap_, 0
 	);
 
-	//エマ
+	// エマ
 	ema_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"sakurabaEma.png", resourceUpload,
 		descriptor_heap_, 1
 	);
 
-	//メルル
+	// メルル
 	mrr_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"hikamimrr.png", resourceUpload,
 		descriptor_heap_, 2
 	);
 
-	//シオン ザ DB
+	// シオン ザ DB
 	shion_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"ShionTheDB.png", resourceUpload,
 		descriptor_heap_, 3
 	);
 
-	//リム
+	// リム
 	rim_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"rim.png", resourceUpload,
 		descriptor_heap_, 4
 	);
+
+	// 学校指定の画像
 
 
 	auto&& swapChain = DXTK->SwapChain;
@@ -166,17 +168,17 @@ void MainScene::Render()
 
 	sprite_batch_->Begin(commandList);
 
-	sprite_batch_->Draw(
-		bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f));
+	// sprite_batch_->Draw(
+	//	bg_sprite_.handle, bg_sprite_.size, Vector2(0.0f, 0.0f));
 
 	// sprite_batch_->Draw(
-		//ema_sprite_.handle, ema_sprite_.size, Vector2(player_x_, 100.0));
+	//  ema_sprite_.handle, ema_sprite_.size, Vector2(player_x_, 100.0));
 
 	// sprite_batch_->Draw(
-		//mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f));
+	//	mrr_sprite_.handle, mrr_sprite_.size, Vector2(0.0f, 100.0f));
 
-	sprite_batch_->Draw(
-		shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
+	// sprite_batch_->Draw(
+	//	shion_sprite_.handle, shion_sprite_.size, Vector2(player_pos_.x, 200.0f));
 
 	// sprite_batch_->Draw(
 	//	rim_sprite_.handle, rim_sprite_.size, Vector2(800.0f, 130.0f));
