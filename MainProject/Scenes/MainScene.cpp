@@ -118,16 +118,16 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 	Vector2 direction(0.0f, 0.0f);
-	if (InputSystem.Keyboard.isPressed.Right) {
+	if (InputSystem.Keyboard.isPressed.D) {
 		direction.x += 1.0f;
 	}
-	if (InputSystem.Keyboard.isPressed.Left) {
+	if (InputSystem.Keyboard.isPressed.A) {
 		direction.x -= 1.0f;
 	}
-	if (InputSystem.Keyboard.isPressed.Down) {
+	if (InputSystem.Keyboard.isPressed.S) {
 		direction.y += 1.0f;
 	}
-	if (InputSystem.Keyboard.isPressed.Up) {
+	if (InputSystem.Keyboard.isPressed.W) {
 		direction.y -= 1.0f;
 	}
 
