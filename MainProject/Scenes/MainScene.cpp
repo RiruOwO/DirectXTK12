@@ -72,8 +72,8 @@ void MainScene::CreateDeviceDependentResources()
 		device, L"rim.png", resourceUpload,
 		descriptor_heap_, 4
 	);
-
-	// 学校指定の画像
+	
+	// 学校指定の画像s
 	SCplayer_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"Player.png", resourceUpload,
 		descriptor_heap_, 5
@@ -168,27 +168,11 @@ NextScene MainScene::Update(const float deltaTime)
 		player_pos_.y += speed * deltaTime;
 	}
 
-	if (player_pos_.x < 0.0f)
-	{
-		player_pos_.x = 0.0f;
-	}
+	player_pos_.x = std::max(player_pos_.x, 0.0f);
+	player_pos_.x = std::min(player_pos_.x, 1280.0f - SCplayer_sprite_.size.x);
 
-	float max_x = 1280.0f - SCplayer_sprite_.size.x;
-	if (player_pos_.x > max_x)
-	{
-		player_pos_.x = max_x;
-	}
-
-	if (player_pos_.y < 0.0f)
-	{
-		player_pos_.y = 0.0f;
-	}
-
-	float max_y = 720.0f - SCplayer_sprite_.size.y;
-	if (player_pos_.y > max_y)
-	{
-		player_pos_.y = max_y;
-	}
+	player_pos_.y = std::max(player_pos_.y, 0.0f);
+	player_pos_.y = std::min(player_pos_.y, 720.0f - SCplayer_sprite_.size.y);
 
 	return NextScene::Continue;
 }
