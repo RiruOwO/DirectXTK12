@@ -131,27 +131,16 @@ NextScene MainScene::Update(const float deltaTime)
 		direction.y -= 1.0f;
 	}
 
-	// ベクトルの正規化(長さを1にする)
 	direction.Normalize();
 	player_position_ += direction * 5.0f;
 
-	// 左右の外に出られない
 	player_position_.x = std::clamp(player_position_.x, 0.0f, 1280.0f - 128.0f);
 
-	// 上下の外に出られない
 	player_position_.y = std::clamp(player_position_.y, 0.0f, 720.0f - 128.0f);
 
-	// 敵キャラクターの移動
 	Vector2 enemy_direction = player_position_ - enemy_position_;
 	enemy_direction.Normalize();
 	enemy_position_ += enemy_direction * 3.0f;
-	// 変位ベクトル
-	// 正規化, 単位ベクトル
-	// ベクトルの定数倍
-	// 
-	// 敵から見ると、
-	// ゴール座標:プレイヤーの座標
-	// スタート:敵の座標(現在の座標)
 
 	return NextScene::Continue;
 }
