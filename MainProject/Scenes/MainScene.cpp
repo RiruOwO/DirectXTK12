@@ -143,7 +143,8 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// 敵キャラクターの移動
 	Vector2 enemy_direction = player_position_ - enemy_position_;
-	enemy_position_ += enemy_direction;
+	enemy_direction.Normalize();
+	enemy_position_ += enemy_direction * 3.0f;
 	// 変位ベクトル
 	// 正規化, 単位ベクトル
 	// ベクトルの定数倍
