@@ -146,25 +146,23 @@ void MainScene::OnRestartSound()
 // Updates the scene.
 NextScene MainScene::Update(const float deltaTime)
 {
-	// If you use 'deltaTime', remove it.
-	UNREFERENCED_PARAMETER(deltaTime);
+	const float speed = 600.0f;
 
-	void momvent(); {
-		if (InputSystem.Keyboard.isPressed.A)
-			player_pos_.x -= 10.0f;
-
-		if (InputSystem.Keyboard.isPressed.D)
-			player_pos_.x += 10.0f;
+	if (InputSystem.Keyboard.isPressed.A)
+	{
+		player_pos_.x -= speed * deltaTime;
 	}
 
-	void boarder(); {
-		player_pos_.x = std::max(player_pos_.x, 0.0f); 
-		player_pos_.x = std::min(player_pos_.x, 1280.0f - SCplayer_sprite_.size.x);
+	if (InputSystem.Keyboard.isPressed.D)
+	{
+		player_pos_.x += speed * deltaTime;
 	}
+
+	player_pos_.x = std::max(player_pos_.x, 0.0f);
+	player_pos_.x = std::min(player_pos_.x, 1280.0f - SCplayer_sprite_.size.x);
+
 
 	return NextScene::Continue;
-
-
 }
 
 // Draws the scene.
