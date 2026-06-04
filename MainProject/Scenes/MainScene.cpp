@@ -168,14 +168,13 @@ NextScene MainScene::Update(const float deltaTime)
 		player_pos_.y += speed * deltaTime;
 	}
 
-	player_pos_.x = std::max(player_pos_.x, 0.0f);
-	player_pos_.x = std::min(player_pos_.x, 1280.0f - SCplayer_sprite_.size.x);
+	player_pos_.x = std::clamp(player_pos_.x, 0.0f, 1280.0f - 128.0f);
 
-	player_pos_.y = std::max(player_pos_.y, 0.0f);
-	player_pos_.y = std::min(player_pos_.y, 720.0f - SCplayer_sprite_.size.y);
+	player_pos_.y = std::clamp(player_pos_.y, 0.0f, 720.0f - 128.0f);
 
-	player_pos_;
-	enemy_pos_;
+
+	Vector2 enemy_direction = player_pos_ - enemy_pos_;
+	enemy_pos_ += enemy_direction;
 
 
 
