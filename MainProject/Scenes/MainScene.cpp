@@ -40,27 +40,22 @@ void MainScene::CreateDeviceDependentResources()
 	auto&& commandQueue = DXTK->Command.Queue;
 
 	// TODO: Add your device-dependent creation code here.
-	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 4);
+	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);
 
 	ResourceUploadBatch resourceUpload(device);
 	resourceUpload.Begin();
 
 	bg_sprite1_ = DirectXTK::CreateSpriteSRV(
-		device, L"TestBG.png", resourceUpload,
+		device, L"Scroll\\TestBG.png", resourceUpload,
 		descriptor_heap_, 0
 	);
-	bg_sprite2_ = DirectXTK::CreateSpriteSRV(
-		device, L"TestBG.png", resourceUpload,
-		descriptor_heap_, 1
-	);
-
 	player_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"player.png", resourceUpload,
-		descriptor_heap_, 2
+		descriptor_heap_, 1
 	);
 	enemy_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"enemy.png", resourceUpload,
-		descriptor_heap_, 3
+		descriptor_heap_, 2
 	);
 
 	auto&& swapChain = DXTK->SwapChain;
@@ -137,17 +132,16 @@ NextScene MainScene::Update(const float deltaTime)
 	direction.Normalize();
 	player_position_ += direction * 5.0f;
 	player_position_.x = std::clamp(player_position_.x, 0.0f, 1280.0f - 128.0f);
-	player_position_.y = std::clamp(player_position_.y, 0.0f, 720.0f - 128.0f);
+	player_position_.y = std::clamp(player_position_.y, 0.0f,  720.0f - 128.0f);
 
 	// 背景スクロール
-
 	bg_position1_.x -= 5.0f;
-	if (bg_position1_.x <= -2560.0f)
-		bg_position1_.x += 2560.0f * 2.0f;
+	if (bg_position1_.x <= -(float)bg_sprite1_.size.x)
+		bg_position1_.x = bg_position2_.x + bg_sprite1_.size.x;
 	bg_position2_.x -= 5.0f;
-	if (bg_position2_.x <= -2560.0f)
-		bg_position2_.x += 2560.0f * 2.0f;
-	
+	if (bg_position2_.x <= -(float)bg_sprite1_.size.x)
+		bg_position2_.x = bg_position1_.x + bg_sprite1_.size.x;
+
 	return NextScene::Continue;
 }
 
@@ -170,7 +164,7 @@ void MainScene::Render()
 		bg_sprite1_.handle, bg_sprite1_.size, bg_position1_
 	);
 	sprite_batch_->Draw(
-		bg_sprite2_.handle, bg_sprite2_.size, bg_position2_
+		bg_sprite1_.handle, bg_sprite1_.size, bg_position2_
 	);
 
 	sprite_batch_->Draw(
