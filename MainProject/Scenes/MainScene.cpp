@@ -1,4 +1,4 @@
-﻿//
+//
 // MainScene.cpp
 //
 
@@ -36,26 +36,31 @@ void MainScene::Start()
 // These are the resources that depend on the device.
 void MainScene::CreateDeviceDependentResources()
 {
-	auto&& device = DXTK->Device;
+	auto&& device       = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
 	// TODO: Add your device-dependent creation code here.
-	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);
+	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 4);
 
 	ResourceUploadBatch resourceUpload(device);
 	resourceUpload.Begin();
 
-	bg_sprite_ = DirectXTK::CreateSpriteSRV(
+	bg_sprite1_ = DirectXTK::CreateSpriteSRV(
 		device, L"TestBG.png", resourceUpload,
 		descriptor_heap_, 0
 	);
+	bg_sprite2_ = DirectXTK::CreateSpriteSRV(
+		device, L"TestBG.png", resourceUpload,
+		descriptor_heap_, 1
+	);
+
 	player_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"player.png", resourceUpload,
-		descriptor_heap_, 1
+		descriptor_heap_, 2
 	);
 	enemy_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"enemy.png", resourceUpload,
-		descriptor_heap_, 2
+		descriptor_heap_, 3
 	);
 
 	auto&& swapChain = DXTK->SwapChain;
@@ -78,9 +83,11 @@ void MainScene::CreateResources()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
-	bg_position_ = Vector2(0.0f, 0.0f);
+	bg_position1_ = Vector2(0.0f, 0.0f);
+	bg_position2_ = Vector2(2560.0f, 0.0f);
+
 	player_position_ = Vector2(0.0f, 0.0f);
-	enemy_position_ = Vector2(1280.0f - 128.0f, 720.0f - 128.0f);
+	enemy_position_  = Vector2(1280.0f - 128.0f, 720.0f - 128.0f);
 }
 
 // Releasing resources required for termination.
@@ -133,8 +140,12 @@ NextScene MainScene::Update(const float deltaTime)
 	player_position_.y = std::clamp(player_position_.y, 0.0f, 720.0f - 128.0f);
 
 	// 背景スクロール
-	bg_position_.x -= 4.0f;
-
+	//bg_position_.x = std::max(bg_position_.x - 15.0f, -1280.0f);
+	bg_position1_.x -= 5.0f;
+	bg_position2_.x -= 5.0f;
+	//if (bg_position_.x < -1280.0f)
+	//	bg_position_.x = -1280.0f;
+	
 	return NextScene::Continue;
 }
 
@@ -144,7 +155,7 @@ void MainScene::Render()
 	DXTK->BeginScene();
 	DXTK->ClearRenderTarget(Colors::Black);
 
-	auto&& device = DXTK->Device;
+	auto&& device      = DXTK->Device;
 	auto&& commandList = DXTK->Command.List;
 
 	// TODO: Add your rendering code here.
@@ -154,8 +165,12 @@ void MainScene::Render()
 	sprite_batch_->Begin(commandList);
 
 	sprite_batch_->Draw(
-		bg_sprite_.handle, bg_sprite_.size, bg_position_
+		bg_sprite1_.handle, bg_sprite1_.size, bg_position1_
 	);
+	sprite_batch_->Draw(
+		bg_sprite2_.handle, bg_sprite2_.size, bg_position2_
+	);
+
 	sprite_batch_->Draw(
 		player_sprite_.handle, player_sprite_.size,
 		player_position_

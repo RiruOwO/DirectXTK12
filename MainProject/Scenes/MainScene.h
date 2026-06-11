@@ -42,8 +42,11 @@ private:
 	DirectXTK::DescriptorHeap descriptor_heap_;
 	DirectXTK::SpriteBatch sprite_batch_;
 
-	DirectXTK::Sprite bg_sprite_;
-	SimpleMath::Vector2 bg_position_;
+	DirectXTK::Sprite bg_sprite1_;
+	SimpleMath::Vector2 bg_position1_;
+
+	DirectXTK::Sprite bg_sprite2_;
+	SimpleMath::Vector2 bg_position2_;
 
 	DirectXTK::Sprite player_sprite_;
 	SimpleMath::Vector2 player_position_;
