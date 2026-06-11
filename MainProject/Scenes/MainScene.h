@@ -51,4 +51,6 @@ private:
 
 	DirectXTK::Sprite enemy_sprite_;
 	SimpleMath::Vector2 enemy_position_;
+
+	DirectXTK::SpriteFont sprite_font_;
 };

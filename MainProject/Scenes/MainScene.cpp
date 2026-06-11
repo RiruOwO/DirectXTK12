@@ -40,13 +40,13 @@ void MainScene::CreateDeviceDependentResources()
 	auto&& commandQueue = DXTK->Command.Queue;
 
 	// TODO: Add your device-dependent creation code here.
-	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 3);
+	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 4);
 
 	ResourceUploadBatch resourceUpload(device);
 	resourceUpload.Begin();
 
 	bg_sprite1_ = DirectXTK::CreateSpriteSRV(
-		device, L"Scroll\\TestBG.png", resourceUpload,
+		device, L"TestBG.png", resourceUpload,
 		descriptor_heap_, 0
 	);
 	player_sprite_ = DirectXTK::CreateSpriteSRV(
@@ -56,6 +56,11 @@ void MainScene::CreateDeviceDependentResources()
 	enemy_sprite_ = DirectXTK::CreateSpriteSRV(
 		device, L"enemy.png", resourceUpload,
 		descriptor_heap_, 2
+	);
+
+	sprite_font_ = DirectXTK::CreateSpriteFont(
+		device, L"CourierNew.spritefont", resourceUpload,
+		descriptor_heap_, 3
 	);
 
 	auto&& swapChain = DXTK->SwapChain;
@@ -78,8 +83,10 @@ void MainScene::CreateResources()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
-	bg_position1_ = Vector2(0.0f, 0.0f);
-	bg_position2_ = Vector2(2560.0f, 0.0f);
+	bg_position1_ = Vector2(0.0f, -(float)bg_sprite1_.size.y + 720.0f);
+
+	bg_position2_.x = bg_position1_.x;
+	bg_position2_.y = bg_position1_.y - bg_sprite1_.size.y;
 
 	player_position_ = Vector2(0.0f, 0.0f);
 	enemy_position_  = Vector2(1280.0f - 128.0f, 720.0f - 128.0f);
@@ -116,9 +123,6 @@ void MainScene::OnRestartSound()
 // Updates the scene.
 NextScene MainScene::Update(const float deltaTime)
 {
-	// If you use 'deltaTime', remove it.
-	UNREFERENCED_PARAMETER(deltaTime);
-
 	Vector2 direction(0.0f, 0.0f);
 	if (InputSystem.Keyboard.isPressed.Right)
 		direction.x += 1.0f;
@@ -130,17 +134,21 @@ NextScene MainScene::Update(const float deltaTime)
 		direction.y -= 1.0f;
 
 	direction.Normalize();
-	player_position_ += direction * 5.0f;
+
+	// 移動距離＝速度＊時間(秒)
+	player_position_ += direction * 400.0f * deltaTime;
+
 	player_position_.x = std::clamp(player_position_.x, 0.0f, 1280.0f - 128.0f);
 	player_position_.y = std::clamp(player_position_.y, 0.0f,  720.0f - 128.0f);
 
 	// 背景スクロール
-	bg_position1_.x -= 5.0f;
-	if (bg_position1_.x <= -(float)bg_sprite1_.size.x)
-		bg_position1_.x = bg_position2_.x + bg_sprite1_.size.x;
-	bg_position2_.x -= 5.0f;
-	if (bg_position2_.x <= -(float)bg_sprite1_.size.x)
-		bg_position2_.x = bg_position1_.x + bg_sprite1_.size.x;
+	bg_position1_.y += 360.0f * deltaTime;
+	if (bg_position1_.y >= 720.0f)
+		bg_position1_.y = bg_position2_.y - bg_sprite1_.size.y;
+
+	bg_position2_.y += 360.0f * deltaTime;
+	if (bg_position2_.y >= 720.0f)
+		bg_position2_.y = bg_position1_.y - bg_sprite1_.size.y;
 
 	return NextScene::Continue;
 }
@@ -176,7 +184,13 @@ void MainScene::Render()
 		enemy_position_
 	);
 
+	sprite_font_->DrawString(
+		sprite_batch_.get(), L"Hello World",
+		Vector2(480.0f, 0.0f), Colors::White, 0.0f, Vector2(0.0f, 0.0f)
+	);
+
 	sprite_batch_->End();
+
 
 	DXTK->EndScene();
 }
