@@ -140,11 +140,9 @@ NextScene MainScene::Update(const float deltaTime)
 	player_position_.y = std::clamp(player_position_.y, 0.0f, 720.0f - 128.0f);
 
 	// 背景スクロール
-	//bg_position_.x = std::max(bg_position_.x - 15.0f, -1280.0f);
+
 	bg_position1_.x -= 5.0f;
 	bg_position2_.x -= 5.0f;
-	//if (bg_position_.x < -1280.0f)
-	//	bg_position_.x = -1280.0f;
 	
 	return NextScene::Continue;
 }
