@@ -142,8 +142,12 @@ NextScene MainScene::Update(const float deltaTime)
 	// 背景スクロール
 
 	bg_position1_.x -= 5.0f;
+	if (bg_position1_.x <= -2560.0f)
+		bg_position1_.x += 2560.0f * 2.0f;
 	bg_position2_.x -= 5.0f;
-	
+	if (bg_position2_.x <= -2560.0f)
+		bg_position2_.x += 2560.0f * 2.0f;
+
 	return NextScene::Continue;
 }
 
