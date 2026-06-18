@@ -36,60 +36,25 @@ void MainScene::Start()
 // These are the resources that depend on the device.
 void MainScene::CreateDeviceDependentResources()
 {
-	auto&& device       = DXTK->Device;
+	auto&& device = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
 	// TODO: Add your device-dependent creation code here.
-	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 4);
 
-	ResourceUploadBatch resourceUpload(device);
-	resourceUpload.Begin();
-
-	bg_sprite1_ = DirectXTK::CreateSpriteSRV(
-		device, L"TestBG.png", resourceUpload,
-		descriptor_heap_, 0
-	);
-	player_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"player.png", resourceUpload,
-		descriptor_heap_, 1
-	);
-	enemy_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"enemy.png", resourceUpload,
-		descriptor_heap_, 2
-	);
-
-	sprite_font_ = DirectXTK::CreateSpriteFont(
-		device, L"CourierNew.spritefont", resourceUpload,
-		descriptor_heap_, 3
-	);
-
-	auto&& swapChain = DXTK->SwapChain;
-	RenderTargetState rts(swapChain.Format, swapChain.DepthFormat);
-	SpriteBatchPipelineStateDescription pd(rts, &CommonStates::NonPremultiplied);
-	sprite_batch_ = DirectXTK::CreateSpriteBatch(
-		device, resourceUpload, pd, &swapChain.Viewport
-	);
-
-	auto&& uploadFinished = resourceUpload.End(commandQueue);
-	uploadFinished.wait();
 }
 
 // Create independent resources.
 void MainScene::CreateResources()
 {
-
+	explode_se_ = DirectXTK::CreateSound(
+		DXTK->Audio.Engine, L"Sounds\\Explo1.wav"
+	);
 }
 
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
-	bg_position1_ = Vector2(0.0f, -(float)bg_sprite1_.size.y + 720.0f);
 
-	bg_position2_.x = bg_position1_.x;
-	bg_position2_.y = bg_position1_.y - bg_sprite1_.size.y;
-
-	player_position_ = Vector2(0.0f, 0.0f);
-	enemy_position_  = Vector2(1280.0f - 128.0f, 720.0f - 128.0f);
 }
 
 // Releasing resources required for termination.
@@ -123,32 +88,10 @@ void MainScene::OnRestartSound()
 // Updates the scene.
 NextScene MainScene::Update(const float deltaTime)
 {
-	Vector2 direction(0.0f, 0.0f);
-	if (InputSystem.Keyboard.isPressed.Right)
-		direction.x += 1.0f;
-	if (InputSystem.Keyboard.isPressed.Left)
-		direction.x -= 1.0f;
-	if (InputSystem.Keyboard.isPressed.Down)
-		direction.y += 1.0f;
-	if (InputSystem.Keyboard.isPressed.Up)
-		direction.y -= 1.0f;
+	UNREFERENCED_PARAMETER(deltaTime);
 
-	direction.Normalize();
-
-	// 移動距離＝速度＊時間(秒)
-	player_position_ += direction * 400.0f * deltaTime;
-
-	player_position_.x = std::clamp(player_position_.x, 0.0f, 1280.0f - 128.0f);
-	player_position_.y = std::clamp(player_position_.y, 0.0f,  720.0f - 128.0f);
-
-	// 背景スクロール
-	bg_position1_.y += 360.0f * deltaTime;
-	if (bg_position1_.y >= 720.0f)
-		bg_position1_.y = bg_position2_.y - bg_sprite1_.size.y;
-
-	bg_position2_.y += 360.0f * deltaTime;
-	if (bg_position2_.y >= 720.0f)
-		bg_position2_.y = bg_position1_.y - bg_sprite1_.size.y;
+	if (InputSystem.Keyboard.wasPressedThisFrame.Enter)
+		explode_se_->Play();
 
 	return NextScene::Continue;
 }
@@ -157,39 +100,12 @@ NextScene MainScene::Update(const float deltaTime)
 void MainScene::Render()
 {
 	DXTK->BeginScene();
-	DXTK->ClearRenderTarget(Colors::Black);
+	DXTK->ClearRenderTarget(Colors::CornflowerBlue);
 
-	auto&& device      = DXTK->Device;
+	auto&& device = DXTK->Device;
 	auto&& commandList = DXTK->Command.List;
 
 	// TODO: Add your rendering code here.
-	ID3D12DescriptorHeap* heaps[] = { descriptor_heap_->Heap() };
-	commandList->SetDescriptorHeaps(std::size(heaps), heaps);
-
-	sprite_batch_->Begin(commandList);
-
-	sprite_batch_->Draw(
-		bg_sprite1_.handle, bg_sprite1_.size, bg_position1_
-	);
-	sprite_batch_->Draw(
-		bg_sprite1_.handle, bg_sprite1_.size, bg_position2_
-	);
-
-	sprite_batch_->Draw(
-		player_sprite_.handle, player_sprite_.size,
-		player_position_
-	);
-	sprite_batch_->Draw(
-		enemy_sprite_.handle, enemy_sprite_.size,
-		enemy_position_
-	);
-
-	sprite_font_->DrawString(
-		sprite_batch_.get(), L"Hello World",
-		Vector2(480.0f, 0.0f), Colors::White, 0.0f, Vector2(0.0f, 0.0f)
-	);
-
-	sprite_batch_->End();
 
 
 	DXTK->EndScene();
