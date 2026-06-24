@@ -1,5 +1,7 @@
 # DirectXの授業
 
+めんどくさくなった
+
 ## Preview
 !["img"](https://github.com/RiruOwO/DirectXTK12/blob/master/2026_05_14.png)
 
