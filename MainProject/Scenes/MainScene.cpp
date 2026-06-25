@@ -39,22 +39,30 @@ void MainScene::CreateDeviceDependentResources()
 	auto&& device = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
-	// TODO: Add your device-dependent creation code here.
+	descriptor_heap_ = DirectXTK::CreateDescriptorHeap(device, 1);
+
+	ResourceUploadBatch resourceUpload(device);
+	resourceUpload.Begin();
+
+	bg_sprite_ = DirectXTK::CreateSpriteSRV(device, L"BG.png", resourceUpload, descriptor_heap_, 0);
+
+	auto&& uploadResourceFinished = resourceUpload.End(commandQueue);
+	uploadResourceFinished.wait();
 
 }
 
 // Create independent resources.
 void MainScene::CreateResources()
 {
-	explode_se_ = DirectXTK::CreateSound(
-		DXTK->Audio.Engine, L"Sounds\\Explo1.wav"
-	);
+	
 }
 
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
-
+	DXTK->SwapChain.Width;
+	DXTK->SwapChain.Height;
+	player_position_ = Vector2(DXTK->SwapChain.Width / 2.0f, DXTK->SwapChain.Height / 2.0f);
 }
 
 // Releasing resources required for termination.
@@ -90,8 +98,7 @@ NextScene MainScene::Update(const float deltaTime)
 {
 	UNREFERENCED_PARAMETER(deltaTime);
 
-	if (InputSystem.Keyboard.wasPressedThisFrame.Enter)
-		explode_se_->Play();
+	
 
 	return NextScene::Continue;
 }

@@ -40,10 +40,10 @@ public:
 
 private:
 	DirectXTK::DescriptorHeap descriptor_heap_;
-	DirectXTK::SpriteBatch sprite_batch_;
-
 	DirectXTK::Sprite bg_sprite_;
 
+	SimpleMath::Vector2 player_position_;
 
-	DirectXTK::Sound
+	DirectXTK::SpriteBatch sprite_batch_;
+
 };
