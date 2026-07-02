@@ -39,11 +39,25 @@ public:
 	void Render() override;
 
 private:
-	DirectXTK::DescriptorHeap descriptor_heap_;
-	DirectXTK::Sprite bg_sprite_;
+	void InitializePlayerPostion();
 
+	DirectXTK::DescriptorHeap descriptor_heap_;
+
+	DirectXTK::Sprite bg_sprite_;
+	DirectXTK::Sprite player_sprite_;
 	SimpleMath::Vector2 player_position_;
 
-	DirectXTK::SpriteBatch sprite_batch_;
+	DirectXTK::Sprite redcar_sprite_;
+	SimpleMath::Vector2 redcar_position_;
 
+	DirectXTK::Sprite minivan_sprite_;
+	SimpleMath::Vector2 minivan_position_;
+
+	DirectXTK::Sprite collision_sprite_;
+
+	DirectXTK::SpriteFont sprite_font_;
+	int score_;
+	int rest_;
+
+	DirectXTK::SpriteBatch sprite_batch_;
 };
