@@ -192,6 +192,19 @@ NextScene MainScene::Update(const float deltaTime)
 	redcar_collision.height = redcar_sprite_.size.y;
 
 	if (player_collision.Intersects(redcar_collision)) {
+		--rest_;
+		InitializePlayerPostion();
+	}
+
+	// ミニバンの衝突領域
+	Rectangle minivan_collision;
+	minivan_collision.x = minivan_position_.x;
+	minivan_collision.y = minivan_position_.y;
+	minivan_collision.width = minivan_sprite_.size.x;
+	minivan_collision.height = minivan_sprite_.size.y;
+
+	if (player_collision.Intersects(minivan_collision)) {
+		--rest_;
 		InitializePlayerPostion();
 	}
 
@@ -240,7 +253,7 @@ void MainScene::Render()
 	player_collision.y = player_position_.y;
 	player_collision.width = player_sprite_.size.x;
 	player_collision.height = player_sprite_.size.y;
-	XMVECTORF32 collision_color = { {{ 1.0f, 0.0f, 0.0f, 0.5f }} };	// 左からRGBA(0.0f～1.0f)
+	XMVECTORF32 collision_color = { {{ 0.0f, 1.0f, 1.0f, 0.25f }} };	// 左からRGBA(0.0f～1.0f)
 	sprite_batch_->Draw(
 		collision_sprite_.handle, collision_sprite_.size,
 		player_collision, nullptr, collision_color
@@ -263,6 +276,7 @@ void MainScene::Render()
 	sprite_font_->DrawString(
 		sprite_batch_.get(), L"REST", Vector2(1024.0f, 0.0f), Colors::White
 	);
+
 	std::wstring rest_string = std::to_wstring(rest_);
 	Vector2 rest_origin = sprite_font_->MeasureString(rest_string.c_str());
 	rest_origin.y = 0.0f;
@@ -270,7 +284,6 @@ void MainScene::Render()
 		sprite_batch_.get(), rest_string.c_str(), Vector2(1080.0f, 32.0f), Colors::Red,
 		0.0f, rest_origin
 	);
-
 
 	sprite_batch_->End();
 
