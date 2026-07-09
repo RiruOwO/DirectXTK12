@@ -36,7 +36,7 @@ void MainScene::Start()
 // These are the resources that depend on the device.
 void MainScene::CreateDeviceDependentResources()
 {
-	auto&& device = DXTK->Device;
+	auto&& device       = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
 	// TODO: Add your device-dependent creation code here.
@@ -61,7 +61,7 @@ void MainScene::CreateDeviceDependentResources()
 		device, L"Minivan.tif", resourceUpload,
 		descriptor_heap_, 3
 	);
-
+	
 	// 当たり判定確認用
 	collision_sprite_ = DirectXTK::CreateDefaultSpriteSRV(
 		device, resourceUpload,
@@ -179,9 +179,9 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// プレイヤーの衝突領域
 	Rectangle player_collision;
-	player_collision.x = player_position_.x;
-	player_collision.y = player_position_.y;
-	player_collision.width = player_sprite_.size.x;
+	player_collision.x      = player_position_.x;
+	player_collision.y      = player_position_.y;
+	player_collision.width  = player_sprite_.size.x;
 	player_collision.height = player_sprite_.size.y;
 
 	// 赤い車の衝突領域
@@ -193,6 +193,9 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (player_collision.Intersects(redcar_collision)) {
 		--rest_;
+		if(rest_ < 0)
+			return NextScene::GameOverScene;
+
 		InitializePlayerPostion();
 	}
 
@@ -205,12 +208,11 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (player_collision.Intersects(minivan_collision)) {
 		--rest_;
+		if (rest_ < 0)
+			return NextScene::GameOverScene;
+
 		InitializePlayerPostion();
 	}
-
-	// テスト用
-	if (InputSystem.Keyboard.wasPressedThisFrame.Enter)
-		--rest_;
 
 	return NextScene::Continue;
 }
@@ -221,7 +223,7 @@ void MainScene::Render()
 	DXTK->BeginScene();
 	DXTK->ClearRenderTarget(Colors::CornflowerBlue);
 
-	auto&& device = DXTK->Device;
+	auto&& device      = DXTK->Device;
 	auto&& commandList = DXTK->Command.List;
 
 	// TODO: Add your rendering code here.
@@ -253,7 +255,7 @@ void MainScene::Render()
 	player_collision.y = player_position_.y;
 	player_collision.width = player_sprite_.size.x;
 	player_collision.height = player_sprite_.size.y;
-	XMVECTORF32 collision_color = { {{ 0.0f, 1.0f, 1.0f, 0.25f }} };	// 左からRGBA(0.0f～1.0f)
+	XMVECTORF32 collision_color = {{{ 0.0f, 1.0f, 1.0f, 0.25f }}};	// 左からRGBA(0.0f～1.0f)
 	sprite_batch_->Draw(
 		collision_sprite_.handle, collision_sprite_.size,
 		player_collision, nullptr, collision_color

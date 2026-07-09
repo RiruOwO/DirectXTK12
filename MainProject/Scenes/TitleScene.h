@@ -1,5 +1,5 @@
 //
-// GameOverScene.h
+// TitleScene.h
 //
 
 #pragma once
@@ -11,16 +11,16 @@ using std::unique_ptr;
 using std::make_unique;
 using namespace DirectX;
 
-class GameOverScene final : public Scene {
+class TitleScene final : public Scene {
 public:
-	GameOverScene();
-	virtual ~GameOverScene() { Terminate(); }
+	TitleScene();
+	virtual ~TitleScene() { Terminate(); }
 
-	GameOverScene(GameOverScene&&) = default;
-	GameOverScene& operator= (GameOverScene&&) = default;
+	TitleScene(TitleScene&&) = default;
+	TitleScene& operator= (TitleScene&&) = default;
 
-	GameOverScene(GameOverScene const&) = delete;
-	GameOverScene& operator= (GameOverScene const&) = delete;
+	TitleScene(TitleScene const&) = delete;
+	TitleScene& operator= (TitleScene const&) = delete;
 
 	// These are the functions you will implement.
 	void Start() override;
@@ -40,6 +40,6 @@ public:
 
 private:
 	DirectXTK::DescriptorHeap descriptor_heap_;
-	DirectXTK::Sprite gameover_sprite_;
+	DirectXTK::Sprite title_sprite_;
 	DirectXTK::SpriteBatch sprite_batch_;
 };

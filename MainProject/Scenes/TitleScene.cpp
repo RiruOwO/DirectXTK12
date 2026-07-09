@@ -1,5 +1,5 @@
 //
-// GameOverScene.cpp
+// TitleScene.cpp
 //
 
 #include "..\Base\pch.h"
@@ -13,13 +13,13 @@
 using namespace SimpleMath;
 
 // Initialize member variables.
-GameOverScene::GameOverScene()
+TitleScene::TitleScene()
 {
 
 }
 
 // Start is called after the scene is created.
-void GameOverScene::Start()
+void TitleScene::Start()
 {
 	LoadAssets();
 	Initialize();
@@ -34,7 +34,7 @@ void GameOverScene::Start()
 
 // Allocate memory the Direct3D and Direct2D resources.
 // These are the resources that depend on the device.
-void GameOverScene::CreateDeviceDependentResources()
+void TitleScene::CreateDeviceDependentResources()
 {
 	auto&& device       = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
@@ -45,8 +45,8 @@ void GameOverScene::CreateDeviceDependentResources()
 	ResourceUploadBatch resourceUpload(device);
 	resourceUpload.Begin();
 
-	gameover_sprite_ = DirectXTK::CreateSpriteSRV(
-		device, L"GameOver.png", resourceUpload,
+	title_sprite_ = DirectXTK::CreateSpriteSRV(
+		device, L"Title.png", resourceUpload,
 		descriptor_heap_, 0
 	);
 
@@ -62,19 +62,19 @@ void GameOverScene::CreateDeviceDependentResources()
 }
 
 // Create independent resources.
-void GameOverScene::CreateResources()
+void TitleScene::CreateResources()
 {
 
 }
 
 // Initialize a variable and audio resources.
-void GameOverScene::Initialize()
+void TitleScene::Initialize()
 {
 
 }
 
 // Releasing resources required for termination.
-void GameOverScene::Terminate()
+void TitleScene::Terminate()
 {
 	// TODO: Add a sound instance reset.
 	DXTK->Audio.Engine->Suspend();
@@ -91,33 +91,32 @@ void GameOverScene::Terminate()
 }
 
 // Direct3D resource cleanup.
-void GameOverScene::OnDeviceLost()
+void TitleScene::OnDeviceLost()
 {
 
 }
 
 // Restart any looped sounds here
-void GameOverScene::OnRestartSound()
+void TitleScene::OnRestartSound()
 {
 
 }
 
 // Updates the scene.
-NextScene GameOverScene::Update(const float deltaTime)
+NextScene TitleScene::Update(const float deltaTime)
 {
 	// If you use 'deltaTime', remove it.
 	UNREFERENCED_PARAMETER(deltaTime);
 
 	// TODO: Add your game logic here.
-	if (InputSystem.Keyboard.wasPressedThisFrame.Space ||
-		InputSystem.Keyboard.wasPressedThisFrame.Enter)
-		return NextScene::TitleScene;
+	if (InputSystem.Keyboard.wasPressedThisFrame.Enter)
+		return NextScene::MainScene;
 
 	return NextScene::Continue;
 }
 
 // Draws the scene.
-void GameOverScene::Render()
+void TitleScene::Render()
 {
 	DXTK->BeginScene();
 	DXTK->ClearRenderTarget(Colors::CornflowerBlue);
@@ -132,7 +131,7 @@ void GameOverScene::Render()
 	sprite_batch_->Begin(commandList);
 
 	sprite_batch_->Draw(
-		gameover_sprite_.handle, gameover_sprite_.size, Vector2(0.0f, 0.0f)
+		title_sprite_.handle, title_sprite_.size, Vector2(0.0f, 0.0f)
 	);
 
 	sprite_batch_->End();

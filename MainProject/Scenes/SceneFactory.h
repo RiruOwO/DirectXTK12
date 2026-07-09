@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "TitleScene.h"]
 #include "MainScene.h"
 #include "GameOverScene.h"
 
@@ -13,10 +14,17 @@ public:
 	{
 		std::unique_ptr<Scene> scene;
 		switch (nextScene) {
-			case NextScene::MainScene:	scene = std::make_unique<MainScene>();	
-				break;
-			case NextScene::GameOverScene:	scene = std::make_unique<GameOverScene>();
-				break;
+		case NextScene::TitleScene:
+			scene = std::make_unique<TitleScene>();
+			break;
+
+		case NextScene::MainScene:
+			scene = std::make_unique<MainScene>();
+			break;
+
+		case NextScene::GameOverScene:
+			scene = std::make_unique<GameOverScene>();
+			break;
 		}
 		return scene;
 	}

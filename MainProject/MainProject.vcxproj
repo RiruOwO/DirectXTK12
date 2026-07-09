@@ -207,6 +207,7 @@
     <ClInclude Include="Scenes\MainScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SceneFactory.h" />
+    <ClInclude Include="Scenes\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\GameBase.cpp">
@@ -229,6 +230,7 @@
     <ClCompile Include="Base\wiGamepad\wiXInput.cpp" />
     <ClCompile Include="Scenes\GameOverScene.cpp" />
     <ClCompile Include="Scenes\MainScene.cpp" />
+    <ClCompile Include="Scenes\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource\resource.rc" />
