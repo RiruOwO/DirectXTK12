@@ -203,6 +203,7 @@
     <ClInclude Include="Base\wiGamepad\wiVector.h" />
     <ClInclude Include="Base\wiGamepad\wiXInput.h" />
     <ClInclude Include="Scenes\DontDestroyOnLoad.h" />
+    <ClInclude Include="Scenes\GameOverScene.h" />
     <ClInclude Include="Scenes\MainScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SceneFactory.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="Base\wiGamepad\wiMath.cpp" />
     <ClCompile Include="Base\wiGamepad\wiRawGamepad.cpp" />
     <ClCompile Include="Base\wiGamepad\wiXInput.cpp" />
+    <ClCompile Include="Scenes\GameOverScene.cpp" />
     <ClCompile Include="Scenes\MainScene.cpp" />
   </ItemGroup>
   <ItemGroup>

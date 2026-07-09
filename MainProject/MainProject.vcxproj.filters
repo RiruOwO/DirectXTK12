@@ -87,6 +87,9 @@
     <ClInclude Include="Base\Toolkits\InputSystem.h">
       <Filter>Base\Toolkit</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\GameOverScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="Base\Toolkits\DXTKCamera.cpp">
       <Filter>Base\Toolkit</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\GameOverScene.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

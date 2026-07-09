@@ -1,0 +1,45 @@
+//
+// TemplateScene.h
+//
+
+#pragma once
+
+#include "Scene.h"
+
+using Microsoft::WRL::ComPtr;
+using std::unique_ptr;
+using std::make_unique;
+using namespace DirectX;
+
+class GameOverScene final : public Scene {
+public:
+	GameOverScene();
+	virtual ~GameOverScene() { Terminate(); }
+
+	GameOverScene(GameOverScene&&) = default;
+	GameOverScene& operator= (GameOverScene&&) = default;
+
+	GameOverScene(GameOverScene const&) = delete;
+	GameOverScene& operator= (GameOverScene const&) = delete;
+
+	// These are the functions you will implement.
+	void Start() override;
+
+	//void LoadAssets() override;
+	void CreateDeviceDependentResources() override;
+	void CreateResources() override;
+
+	void Initialize() override;
+	void Terminate() override;
+
+	void OnDeviceLost() override;
+	void OnRestartSound() override;
+
+	NextScene Update(const float deltaTime) override;
+	void Render() override;
+
+private:
+
+
+
+};

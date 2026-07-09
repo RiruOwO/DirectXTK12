@@ -7,6 +7,7 @@
 enum class NextScene : int {
 	Continue = 0,
 	MainScene,
+	GameOverScene,
 	StartScene = MainScene
 };
 
