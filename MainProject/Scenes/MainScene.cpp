@@ -95,11 +95,9 @@ void MainScene::Initialize()
 {
 	InitializePlayerPostion();
 
-	redcar_position_ = Vector2(-88.0f, 240.0f);
-	minivan_position_ = Vector2(1280.0f, 314.0f);
-
-	score_ = 0;
-	rest_ = 2;
+	InitializeRedcarPos();
+	InitializeMinivanPos();
+	InitializeGame();
 }
 
 // Releasing resources required for termination.
@@ -307,5 +305,20 @@ void MainScene::ObjectHitboxs()
 
 		InitializePlayerPostion();
 	}
+}
 
+void MainScene::InitializeRedcarPos()
+{
+	redcar_position_ = Vector2(-88.0f, 240.0f);
+}
+
+void MainScene::InitializeMinivanPos()
+{
+	minivan_position_ = Vector2(1280.0f, 314.0f);
+}
+
+void MainScene::InitializeGame()
+{
+	score_ = 0;
+	rest_ = 2;
 }

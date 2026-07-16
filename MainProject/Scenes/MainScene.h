@@ -67,4 +67,8 @@ private:
 	void ClearCheck();
 	void MoveCars();
 	void ObjectHitboxs();
+
+	void InitializeRedcarPos();
+	void InitializeMinivanPos();
+	void InitializeGame();
 };
