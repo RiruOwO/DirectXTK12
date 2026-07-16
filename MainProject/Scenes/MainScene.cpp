@@ -134,85 +134,11 @@ void MainScene::OnRestartSound()
 // Updates the scene.
 NextScene MainScene::Update(const float deltaTime)
 {
-	// プレイヤーの移動
-	Vector2 direction = Vector2(0.0f, 0.0f);
-	if (InputSystem.Keyboard.isPressed.Right)
-		direction += Vector2(1.0f, 0.0f);
-	if (InputSystem.Keyboard.isPressed.Left)
-		direction += Vector2(-1.0f, 0.0f);
-	if (InputSystem.Keyboard.isPressed.Down)
-		direction += Vector2(0.0f, 1.0f);
-	if (InputSystem.Keyboard.isPressed.Up)
-		direction += Vector2(0.0f, -1.0f);
-	direction.Normalize();
-	player_position_ += 200.0f * direction * deltaTime;
-
-	// 画面の左右から出られない
-	player_position_.x = std::clamp(
-		player_position_.x,
-		DXTK->SwapChain.Viewport.TopLeftX,
-		DXTK->SwapChain.Viewport.Width - player_sprite_.size.x
-	);
-
-	// 画面の下から出られない
-	player_position_.y = std::min(player_position_.y, DXTK->SwapChain.Viewport.Height - player_sprite_.size.y);
-
-	// クリア判定
-	if (player_position_.y <= 0.0f) {
-		// スコアを加算する
-		++score_;
-		// プレイヤーの座標をスタート地点にする
-		InitializePlayerPostion();
-	}
-
-	// 赤い車
-	redcar_position_.x += 400.0f * deltaTime;
-	if (redcar_position_.x >= 1280.0f) {
-		redcar_position_.x = -88.0f;
-	}
-
-	// ミニバン
-	minivan_position_.x += -200.0f * deltaTime;
-	if (minivan_position_.x <= -float(minivan_sprite_.size.x)) {
-		minivan_position_.x = 1280.0f;
-	}
-
-	// プレイヤーの衝突領域
-	Rectangle player_collision;
-	player_collision.x      = player_position_.x;
-	player_collision.y      = player_position_.y;
-	player_collision.width  = player_sprite_.size.x;
-	player_collision.height = player_sprite_.size.y;
-
-	// 赤い車の衝突領域
-	Rectangle redcar_collision;
-	redcar_collision.x = redcar_position_.x;
-	redcar_collision.y = redcar_position_.y;
-	redcar_collision.width = redcar_sprite_.size.x;
-	redcar_collision.height = redcar_sprite_.size.y;
-
-	if (player_collision.Intersects(redcar_collision)) {
-		--rest_;
-		if(rest_ < 0)
-			return NextScene::GameOverScene;
-
-		InitializePlayerPostion();
-	}
-
-	// ミニバンの衝突領域
-	Rectangle minivan_collision;
-	minivan_collision.x = minivan_position_.x;
-	minivan_collision.y = minivan_position_.y;
-	minivan_collision.width = minivan_sprite_.size.x;
-	minivan_collision.height = minivan_sprite_.size.y;
-
-	if (player_collision.Intersects(minivan_collision)) {
-		--rest_;
-		if (rest_ < 0)
-			return NextScene::GameOverScene;
-
-		InitializePlayerPostion();
-	}
+	MovePlayer();
+	ScreenBorder();
+	ClearCheck();
+	MoveCars();
+	ObjectHitboxs();
 
 	return NextScene::Continue;
 }
@@ -298,4 +224,88 @@ void MainScene::InitializePlayerPostion()
 		(DXTK->SwapChain.Viewport.Width - player_sprite_.size.x) / 2.0f,
 		DXTK->SwapChain.Viewport.Height - player_sprite_.size.y
 	);
+}
+
+void MainScene::MovePlayer()
+{
+	Vector2 direction = Vector2(0.0f, 0.0f);
+	if (InputSystem.Keyboard.isPressed.Right)
+		direction += Vector2(1.0f, 0.0f);
+	if (InputSystem.Keyboard.isPressed.Left)
+		direction += Vector2(-1.0f, 0.0f);
+	if (InputSystem.Keyboard.isPressed.Down)
+		direction += Vector2(0.0f, 1.0f);
+	if (InputSystem.Keyboard.isPressed.Up)
+		direction += Vector2(0.0f, -1.0f);
+	direction.Normalize();
+	player_position_ += 200.0f * direction * DXTK->Time.deltaTime;
+}
+
+void MainScene::ScreenBorder()
+{
+	player_position_.x = std::clamp(
+		player_position_.x,
+		DXTK->SwapChain.Viewport.TopLeftX,
+		DXTK->SwapChain.Viewport.Width - player_sprite_.size.x
+	);
+	player_position_.y = std::min(player_position_.y, DXTK->SwapChain.Viewport.Height - player_sprite_.size.y);
+}
+
+void MainScene::ClearCheck()
+{
+	if (player_position_.y <= 0.0f) {
+		++score_;
+		InitializePlayerPostion();
+	}
+}
+
+void MainScene::MoveCars()
+{
+	redcar_position_.x += 400.0f * DXTK->Time.deltaTime;
+	if (redcar_position_.x >= 1280.0f) {
+		redcar_position_.x = -88.0f;
+	}
+
+	minivan_position_.x += -200.0f * DXTK->Time.deltaTime;
+	if (minivan_position_.x <= -float(minivan_sprite_.size.x)) {
+		minivan_position_.x = 1280.0f;
+	}
+}
+
+void MainScene::ObjectHitboxs()
+{
+	Rectangle player_collision;
+	player_collision.x = player_position_.x;
+	player_collision.y = player_position_.y;
+	player_collision.width = player_sprite_.size.x;
+	player_collision.height = player_sprite_.size.y;
+
+	Rectangle redcar_collision;
+	redcar_collision.x = redcar_position_.x;
+	redcar_collision.y = redcar_position_.y;
+	redcar_collision.width = redcar_sprite_.size.x;
+	redcar_collision.height = redcar_sprite_.size.y;
+
+	if (player_collision.Intersects(redcar_collision)) {
+		--rest_;
+		if (rest_ < 0)
+			return;
+
+		InitializePlayerPostion();
+	}
+
+	Rectangle minivan_collision;
+	minivan_collision.x = minivan_position_.x;
+	minivan_collision.y = minivan_position_.y;
+	minivan_collision.width = minivan_sprite_.size.x;
+	minivan_collision.height = minivan_sprite_.size.y;
+
+	if (player_collision.Intersects(minivan_collision)) {
+		--rest_;
+		if (rest_ < 0)
+			return;
+
+		InitializePlayerPostion();
+	}
+
 }

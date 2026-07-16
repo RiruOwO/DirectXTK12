@@ -60,4 +60,11 @@ private:
 	int rest_;
 
 	DirectXTK::SpriteBatch sprite_batch_;
+
+
+	void MovePlayer();
+	void ScreenBorder();
+	void ClearCheck();
+	void MoveCars();
+	void ObjectHitboxs();
 };
