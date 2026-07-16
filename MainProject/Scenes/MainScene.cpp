@@ -36,7 +36,7 @@ void MainScene::Start()
 // These are the resources that depend on the device.
 void MainScene::CreateDeviceDependentResources()
 {
-	auto&& device       = DXTK->Device;
+	auto&& device = DXTK->Device;
 	auto&& commandQueue = DXTK->Command.Queue;
 
 	// TODO: Add your device-dependent creation code here.
@@ -61,12 +61,9 @@ void MainScene::CreateDeviceDependentResources()
 		device, L"Minivan.tif", resourceUpload,
 		descriptor_heap_, 3
 	);
-	
+
 	// 当たり判定確認用
-	collision_sprite_ = DirectXTK::CreateDefaultSpriteSRV(
-		device, resourceUpload,
-		descriptor_heap_, 4
-	);
+	collision_sprite_ = DirectXTK::CreateDefaultSpriteSRV(device, resourceUpload, descriptor_heap_, 4);
 
 	sprite_font_ = DirectXTK::CreateSpriteFont(
 		device, L"MSGothic.spritefont", resourceUpload,
@@ -93,11 +90,12 @@ void MainScene::CreateResources()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
+	InitializeGameData();
+
 	InitializePlayerPostion();
 
-	InitializeRedcarPos();
-	InitializeMinivanPos();
-	InitializeGame();
+	InitializeRedcar();
+	InitializeMinivan();
 }
 
 // Releasing resources required for termination.
@@ -133,10 +131,29 @@ void MainScene::OnRestartSound()
 NextScene MainScene::Update(const float deltaTime)
 {
 	MovePlayer();
-	ScreenBorder();
-	ClearCheck();
-	MoveCars();
-	ObjectHitboxs();
+	ClampPlayerPosition();
+
+	ProcessClear();
+
+	// 赤い車
+	redcar_position_.x += 400.0f * deltaTime;
+	if (redcar_position_.x >= 1280.0f) {
+		redcar_position_.x = -88.0f;
+	}
+
+	// ミニバン
+	minivan_position_.x += -200.0f * deltaTime;
+	if (minivan_position_.x <= -float(minivan_sprite_.size.x)) {
+		minivan_position_.x = 1280.0f;
+	}
+
+	if (CollisionDetection()) {
+		RetryPlayer();
+	}
+
+	// 残機0未満はゲームオーバー
+	if (rest_ < 0)
+		return NextScene::GameOverScene;
 
 	return NextScene::Continue;
 }
@@ -147,7 +164,7 @@ void MainScene::Render()
 	DXTK->BeginScene();
 	DXTK->ClearRenderTarget(Colors::CornflowerBlue);
 
-	auto&& device      = DXTK->Device;
+	auto&& device = DXTK->Device;
 	auto&& commandList = DXTK->Command.List;
 
 	// TODO: Add your rendering code here.
@@ -179,7 +196,7 @@ void MainScene::Render()
 	player_collision.y = player_position_.y;
 	player_collision.width = player_sprite_.size.x;
 	player_collision.height = player_sprite_.size.y;
-	XMVECTORF32 collision_color = {{{ 0.0f, 1.0f, 1.0f, 0.25f }}};	// 左からRGBA(0.0f～1.0f)
+	XMVECTORF32 collision_color = { {{ 0.0f, 1.0f, 1.0f, 0.25f }} };	// 左からRGBA(0.0f～1.0f)
 	sprite_batch_->Draw(
 		collision_sprite_.handle, collision_sprite_.size,
 		player_collision, nullptr, collision_color
@@ -216,6 +233,12 @@ void MainScene::Render()
 	DXTK->EndScene();
 }
 
+void MainScene::InitializeGameData()
+{
+	score_ = 0;
+	rest_ = 2;
+}
+
 void MainScene::InitializePlayerPostion()
 {
 	player_position_ = Vector2(
@@ -224,8 +247,19 @@ void MainScene::InitializePlayerPostion()
 	);
 }
 
+void MainScene::InitializeRedcar()
+{
+	redcar_position_ = Vector2(-88.0f, 240.0f);
+}
+
+void MainScene::InitializeMinivan()
+{
+	minivan_position_ = Vector2(1280.0f, 314.0f);
+}
+
 void MainScene::MovePlayer()
 {
+	// プレイヤーの移動
 	Vector2 direction = Vector2(0.0f, 0.0f);
 	if (InputSystem.Keyboard.isPressed.Right)
 		direction += Vector2(1.0f, 0.0f);
@@ -239,45 +273,54 @@ void MainScene::MovePlayer()
 	player_position_ += 200.0f * direction * DXTK->Time.deltaTime;
 }
 
-void MainScene::ScreenBorder()
+void MainScene::ClampPlayerPosition()
 {
+	// 画面の左右から出られない
 	player_position_.x = std::clamp(
 		player_position_.x,
 		DXTK->SwapChain.Viewport.TopLeftX,
 		DXTK->SwapChain.Viewport.Width - player_sprite_.size.x
 	);
+
+	// 画面の下から出られない
 	player_position_.y = std::min(player_position_.y, DXTK->SwapChain.Viewport.Height - player_sprite_.size.y);
 }
 
-void MainScene::ClearCheck()
+void MainScene::ProcessClear()
 {
+	// 画面上部到達のクリア処理
 	if (player_position_.y <= 0.0f) {
 		++score_;
 		InitializePlayerPostion();
 	}
 }
 
-void MainScene::MoveCars()
+void MainScene::RetryPlayer()
 {
-	redcar_position_.x += 400.0f * DXTK->Time.deltaTime;
-	if (redcar_position_.x >= 1280.0f) {
-		redcar_position_.x = -88.0f;
-	}
-
-	minivan_position_.x += -200.0f * DXTK->Time.deltaTime;
-	if (minivan_position_.x <= -float(minivan_sprite_.size.x)) {
-		minivan_position_.x = 1280.0f;
-	}
+	--rest_;
+	InitializePlayerPostion();
 }
 
-void MainScene::ObjectHitboxs()
+void MainScene::MoveRedcar()
 {
+
+}
+
+void MainScene::MoveMinivan()
+{
+
+}
+
+bool MainScene::CollisionDetection()
+{
+	// プレイヤーの衝突領域
 	Rectangle player_collision;
 	player_collision.x = player_position_.x;
 	player_collision.y = player_position_.y;
 	player_collision.width = player_sprite_.size.x;
 	player_collision.height = player_sprite_.size.y;
 
+	// 赤い車の衝突領域
 	Rectangle redcar_collision;
 	redcar_collision.x = redcar_position_.x;
 	redcar_collision.y = redcar_position_.y;
@@ -285,13 +328,10 @@ void MainScene::ObjectHitboxs()
 	redcar_collision.height = redcar_sprite_.size.y;
 
 	if (player_collision.Intersects(redcar_collision)) {
-		--rest_;
-		if (rest_ < 0)
-			return;
-
-		InitializePlayerPostion();
+		return true;
 	}
 
+	// ミニバンの衝突領域
 	Rectangle minivan_collision;
 	minivan_collision.x = minivan_position_.x;
 	minivan_collision.y = minivan_position_.y;
@@ -299,26 +339,28 @@ void MainScene::ObjectHitboxs()
 	minivan_collision.height = minivan_sprite_.size.y;
 
 	if (player_collision.Intersects(minivan_collision)) {
-		--rest_;
-		if (rest_ < 0)
-			return;
-
-		InitializePlayerPostion();
+		return true;
 	}
+
+	return false;
 }
 
-void MainScene::InitializeRedcarPos()
+void MainScene::DrawBG()
 {
-	redcar_position_ = Vector2(-88.0f, 240.0f);
+
 }
 
-void MainScene::InitializeMinivanPos()
+void MainScene::DrawPlayer()
 {
-	minivan_position_ = Vector2(1280.0f, 314.0f);
+
 }
 
-void MainScene::InitializeGame()
+void MainScene::DrawRedcar()
 {
-	score_ = 0;
-	rest_ = 2;
+
+}
+
+void MainScene::DrawMinivan()
+{
+
 }

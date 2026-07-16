@@ -61,14 +61,23 @@ private:
 
 	DirectXTK::SpriteBatch sprite_batch_;
 
+	// プロトタイプの宣言(戻り値の型名 関数名(引数の型)を伝える
+	void InitializeGameData();
+	void InitializeRedcar();
+	void InitializeMinivan();
 
 	void MovePlayer();
-	void ScreenBorder();
-	void ClearCheck();
-	void MoveCars();
-	void ObjectHitboxs();
+	void ClampPlayerPosition();
+	void ProcessClear();
+	void RetryPlayer();
 
-	void InitializeRedcarPos();
-	void InitializeMinivanPos();
-	void InitializeGame();
+	void MoveRedcar();
+	void MoveMinivan();
+
+	bool CollisionDetection();
+
+	void DrawBG();
+	void DrawPlayer();
+	void DrawRedcar();
+	void DrawMinivan();
 };
